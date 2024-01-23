@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="./main.css " />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">당근마켓</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-3">
+      <input
+        type="text"
+        class="form-control mt-2"
+        id="title"
+        placeholder="title"
+      />
+      <textarea class="form-control mt-2" id="content">content</textarea>
+      <input
+        type="text"
+        class="form-control mt-2"
+        id="price"
+        placeholder="price"
+      />
+      <input class="form-control mt-2" type="file" id="image" />
+      <button class="btn btn-danger mt-3" id="send">올리기</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyDku4DN3nzFh6DF_oR3q2PtBS-M6LtZGrQ",
+        authDomain: "carrot-fb88c.firebaseapp.com",
+        projectId: "carrot-fb88c",
+        storageBucket: "carrot-fb88c.appspot.com",
+        messagingSenderId: "688452900120",
+        appId: "1:688452900120:web:43bd73dfbc07718cc4ba6d",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script>
+      const db = firebase.firestore();
+      //db.collection('product').doc('상품3').set({ 제목: '변기' })
+
+      const storage = firebase.storage();
+
+      $("#send").click(function () {
+        var file = document.querySelector("#image").files[0];
+        var storageRef = storage.ref();
+        var 저장할경로 = storageRef.child("image/" + file.name);
+        var 업로드작업 = 저장할경로.put(file);
+
+        업로드작업.on(
+          "state_changed",
+          // 변화시 동작하는 함수
+          null,
+          //에러시 동작하는 함수
+          (error) => {
+            console.error("실패사유는", error);
+          },
+          // 성공시 동작하는 함수
+          () => {
+            업로드작업.snapshot.ref.getDownloadURL().then((url) => {
+              console.log("업로드된 경로는", url);
+
+              var 저장할거 = {
+                제목: $("#title").val(),
+                가격: $("#price").val(),
+                내용: $("#content").val(),
+                날짜: new Date(),
+                이미지: url,
+              };
+              db.collection("product")
+                .add(저장할거)
+                .then((result) => {
+                  console.log(result);
+                  // window.location.href = "./index.html";
+                })
+                .catch((err) => {
+                  // 실패후에 실행할 코드
+                  console.log(err);
+                });
+            });
+          }
+        );
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./main.css ">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">당근마켓</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="name" id="name-new">
+        </div>
+        <div class="mb-3">
+            <input type="email" class="form-control" placeholder="email" id="email-new">
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" placeholder="pw" id="pw-new">
+        </div>
+        <button type="submit" class="btn btn-primary" id="register">가입하기</button>
+    </div>
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyDku4DN3nzFh6DF_oR3q2PtBS-M6LtZGrQ",
+            authDomain: "carrot-fb88c.firebaseapp.com",
+            projectId: "carrot-fb88c",
+            storageBucket: "carrot-fb88c.appspot.com",
+            messagingSenderId: "688452900120",
+            appId: "1:688452900120:web:43bd73dfbc07718cc4ba6d"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script>
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        $('#register').click(function () {
+            var 이메일 = $('#email-new').val();
+            var 패스워드 = $('#pw-new').val();
+
+            //로그인 기능
+            firebase.auth().createUserWithEmailAndPassword(이메일, 패스워드).then((result) => {
+                console.log(result)
+                console.log(result.user)
+            }).catch()
+        })
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
